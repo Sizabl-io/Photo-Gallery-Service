@@ -17,7 +17,104 @@
 
 ## Usage
 
-> Some usage instructions
+Endpoints:
+
+## Server API
+
+### Get all photos
+  * GET `/api/photos/`
+
+**Success Status Code:** `200`
+
+**Returns:** Array of JSON objects
+
+```json
+    {
+      "photoId": "Number",
+      "imageList": "String",
+      "reviewList": "String",
+      "userList": "Number",
+      "helpfulList": "Number",
+      "notHelpfulList": "Number",
+    }
+```
+
+### Get photo matching id
+  * GET `/api/photos/:id`
+
+**Path Parameters:**
+  * `id` - photo id
+
+**Success Status Code:** `200`
+
+**Returns:** JSON
+
+```json
+    {
+      "photoId": "Number",
+      "imageList": "String",
+      "reviewList": "String",
+      "userList": "Number",
+      "helpfulList": "Number",
+      "notHelpfulList": "Number",
+    }
+```
+
+### Add a photo
+  * POST `/api/photos`
+
+**Success Status Code:** `201`
+
+**Request Body**: Expects JSON with the following keys.
+
+```json
+    {
+      "imageList": "String",
+      "reviewList": "String",
+      "userList": "Number",
+      "helpfulList": "Number",
+      "notHelpfulList": "Number",
+    }
+```
+
+
+### Update photo info
+  * PATCH `/api/photos/:id`
+
+**Path Parameters:**
+  * `id` - photo id
+
+**Success Status Code:** `204`
+
+**Request Body**: Expects JSON with any of the following keys (include only keys to be updated)
+
+```json
+    {
+      "imageList": "String",
+      "reviewList": "String",
+      "userList": "Number",
+      "helpfulList": "Number",
+      "notHelpfulList": "Number",
+    }
+```
+
+### Delete photo matching id
+  * DELETE `/api/photo/:id`
+
+**Path Parameters:**
+  * `id` - photo id
+
+**Success Status Code:** `204`
+
+``` POST -> '/photos' : creates new record in database ```
+
+``` GET -> '/photos' : returns all photos in database ```
+
+``` GET -> '/photos/:id' : returns photo matching id in database ```
+
+``` PATCH -> 'photos/:id : updates photo matching id in database if it exists ```
+
+``` DELETE -> 'photos/:id: deletes photo matching id in database if it exists ```
 
 ## Requirements
 
