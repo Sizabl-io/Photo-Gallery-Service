@@ -4,7 +4,7 @@ const photo = require('./photo.js');
 mongoose.connect('mongodb://localhost:27017/photo', { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.on('connected', () => {
-  console.log('Mongoose default connection open to: 3003');
+  console.log('Mongoose default connection open to: 3001');
 });
 
 mongoose.connection.once('open', () => {
