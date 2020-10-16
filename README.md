@@ -21,7 +21,75 @@ Endpoints:
 
 ## Server API
 
-### Get photo matching id
+</br>
+
+## *Service API*
+
+</br>
+
+### Get service information matching id
+  * GET `/api/services/:id`
+
+**Path Parameters:**
+  * `id` - service id
+
+**Success Status Code:** `200`
+
+**Returns:** JSON
+
+```json
+    {
+      "gallery_id": "Number",
+      "service_name": "String",
+      "city": "String",
+      "street": "String",
+      "state_or_province": "Number",
+      "country": "String",
+      "zip": "String",
+      "site_url": "String",
+      "phone_number": "String",
+    }
+```
+
+</br>
+
+## *Gallery API*
+
+</br>
+
+
+### Get a gallery matching id
+  * GET `/api/galleries/:id`
+
+**Path Parameters:**
+  * `id` - gallery id
+
+**Success Status Code:** `200`
+
+**Returns:** Array of JSON photo objects
+
+```json
+    {
+      "photo_url": "String",
+      "upload_date": "String",
+      "helpfulCount": "Number",
+      "notHelpfulCount": "Number",
+      "caption": "String",
+      "user_url": "String",
+      "user_name": "String",
+      "user_review_count": "Number",
+      "user_friend_count": "Number",
+      "user_photo_count": "Number",
+    }
+```
+
+</br>
+
+## *Photo API*
+
+</br>
+
+### Get a photo matching id
   * GET `/api/photos/:id`
 
 **Path Parameters:**
@@ -33,12 +101,16 @@ Endpoints:
 
 ```json
     {
-      "photoId": "Number",
-      "imageList": "String",
-      "reviewList": "String",
-      "userList": "Number",
-      "helpfulList": "Number",
-      "notHelpfulList": "Number",
+      "photo_url": "String",
+      "upload_date": "String",
+      "helpfulCount": "Number",
+      "notHelpfulCount": "Number",
+      "caption": "String",
+      "user_url": "String",
+      "user_name": "String",
+      "user_review_count": "Number",
+      "user_friend_count": "Number",
+      "user_photo_count": "Number",
     }
 ```
 
@@ -51,16 +123,17 @@ Endpoints:
 
 ```json
     {
-      "imageList": "String",
-      "reviewList": "String",
-      "userList": "Number",
-      "helpfulList": "Number",
-      "notHelpfulList": "Number",
+      "service_id": "Number", -- service to associate photo with
+      "gallery_id": "Number", -- gallery to associate photo with
+      "user_id": "Number", -- id user that posted the photo
+      "photo_url": "String", -- required
+      "upload_date": "String", -- required
+      "caption": "String", -- optional
     }
 ```
 
 
-### Update photo info
+### Update individual photo info
   * PATCH `/api/photos/:id`
 
 **Path Parameters:**
@@ -72,11 +145,10 @@ Endpoints:
 
 ```json
     {
-      "imageList": "String",
-      "reviewList": "String",
-      "userList": "Number",
-      "helpfulList": "Number",
-      "notHelpfulList": "Number",
+      "helpfulCount": "Number",
+      "notHelpfulCount": "Number",
+      "photo_url": "String",
+      "caption": "String",
     }
 ```
 
@@ -88,15 +160,58 @@ Endpoints:
 
 **Success Status Code:** `204`
 
-``` POST -> '/photos' : creates new record in database ```
+</br>
 
-``` GET -> '/photos' : returns all photos in database ```
+## *User API*
 
-``` GET -> '/photos/:id' : returns photo matching id in database ```
+</br>
 
-``` PATCH -> 'photos/:id : updates photo matching id in database if it exists ```
+### Get all photos posted by a user
+  * GET `/api/users/:id`
 
-``` DELETE -> 'photos/:id: deletes photo matching id in database if it exists ```
+**Path Parameters:**
+  * `id` - user id
+
+**Success Status Code:** `200`
+
+**Returns:** Array of JSON photo objects
+
+```json
+    {
+      "photo_url": "String",
+      "upload_date": "String",
+      "helpfulCount": "Number",
+      "notHelpfulCount": "Number",
+      "caption": "String",
+      "user_url": "String",
+      "user_name": "String",
+      "user_review_count": "Number",
+      "user_friend_count": "Number",
+      "user_photo_count": "Number",
+    }
+```
+
+</br>
+
+## *Locations API*
+
+</br>
+
+### Get services near a city
+  * GET `/api/location/:city`
+
+**Path Parameters:**
+  * `city` - name of city
+
+**Success Status Code:** `200`
+
+**Returns:** Array of JSON service IDs
+
+```json
+    {
+      "service_id": "Number"
+    }
+```
 
 ## Requirements
 
