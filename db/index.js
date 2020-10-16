@@ -1,3 +1,5 @@
+const db = require('./postgres/db.js');
+
 const mongoose = require('mongoose');
 const photo = require('./photo.js');
 

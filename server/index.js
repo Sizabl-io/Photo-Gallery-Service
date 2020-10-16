@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const model = require('../db');
+const model = require('../db/index.js');
 
 const app = express();
 
@@ -32,8 +32,13 @@ const getPhotoById = (id, callback) => {
   });
 };
 
+
+
 // GET all photos
 app.get('/', (req, res) => {
+  console.log('Connecting to the pool...');
+  db.connectToPool()
+    .catch(err => console.log(err.stack));
   res.status(201).send('success!');
 });
 
