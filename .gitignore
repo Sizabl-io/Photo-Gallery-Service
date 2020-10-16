@@ -24,3 +24,5 @@ coverage
 build/
 dist/
 
+# Credentials
+*credentials.js

@@ -1,14 +1,7 @@
 const { Pool } = require('pg');
+const credentials = require('./credentials.js');
 
-const pool = new Pool({
-  host: 'localhost',
-  user: 'postgres',
-  password: '#bns08231',
-  database: 'gallery',
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000
-});
+const pool = new Pool(credentials);
 
 // the pool will emit an error on behalf of any idle clients
 // it contains if a backend error or network partition happens
