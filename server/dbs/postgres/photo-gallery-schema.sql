@@ -19,7 +19,7 @@ CREATE TABLE "restaurants" (
   -- location info
   "street" varchar(100),
   "city" varchar(100) NOT NULL,
-  "state_or_province" varchar(5),
+  "state_or_province" varchar(30),
   "country" varchar(20) NOT NULL,
   "zip" varchar(15)
 );
