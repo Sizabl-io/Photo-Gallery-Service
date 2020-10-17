@@ -5,7 +5,7 @@ WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
 -- general info about a restaurant/merchant
 CREATE TABLE gallery.restaurants (
   -- restaurant info
-  restaurant_id uuid PRIMARY KEY,
+  restaurant_id uuid,
   site_url text, -- optional
   restaurant_name text, -- required
   phone_number text, -- optional
@@ -16,6 +16,7 @@ CREATE TABLE gallery.restaurants (
   state_or_province text, -- optional
   country text, -- optional
   zip text, -- optional
+  PRIMARY KEY (restaurant_id) -- partition by restaurant id
 ) WITH comment = 'Q1. General info about a restaurant';
 
 -- photos associated with a restaurant
@@ -38,6 +39,6 @@ CREATE TABLE gallery.photos_by_restaurant (
   user_review_count smallint, -- number of user's reviews
   user_friend_count smallint, -- number of user's friends
   user_photo_count smallint, -- number of user's photos
-  PRIMARY KEY (photo_id, restaurant_id)
+  PRIMARY KEY (restaurant_id, photo_id)
 ) WITH comment = 'Q2. Find photos by restaurant id'
-AND CLUSTERING ORDER BY (restaurant_id ASC); -- cluster photos with same restaurant id
+AND CLUSTERING ORDER BY (photo_id ASC); -- cluster by photo id, partitioning on restaurant id
