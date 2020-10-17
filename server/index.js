@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const model = require('../db/index.js');
+const model = require('./dbs/mongo/db.js');
 
 const app = express();
 

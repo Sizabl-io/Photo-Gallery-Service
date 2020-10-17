@@ -23,15 +23,15 @@ Endpoints:
 
 </br>
 
-## *Service API*
+## *Restaurant API*
 
 </br>
 
-### Get service information matching id
-  * GET `/api/services/:id`
+### Get restaurant information matching id
+  * GET `/api/restaurant/:id`
 
 **Path Parameters:**
-  * `id` - service id
+  * `id` - restaurant id
 
 **Success Status Code:** `200`
 
@@ -40,7 +40,7 @@ Endpoints:
 ```json
     {
       "gallery_id": "Number",
-      "service_name": "String",
+      "restaurant_name": "String",
       "city": "String",
       "street": "String",
       "state_or_province": "Number",
@@ -123,7 +123,7 @@ Endpoints:
 
 ```json
     {
-      "service_id": "Number", -- service to associate photo with
+      "restaurant_id": "Number", -- restaurant to associate photo with
       "gallery_id": "Number", -- gallery to associate photo with
       "user_id": "Number", -- id user that posted the photo
       "photo_url": "String", -- required
@@ -167,7 +167,7 @@ Endpoints:
 </br>
 
 ### Get all photos posted by a user
-  * GET `/api/users/:id`
+  * GET `/api/users/:id/photos`
 
 **Path Parameters:**
   * `id` - user id
@@ -188,28 +188,6 @@ Endpoints:
       "user_review_count": "Number",
       "user_friend_count": "Number",
       "user_photo_count": "Number",
-    }
-```
-
-</br>
-
-## *Locations API*
-
-</br>
-
-### Get services near a city
-  * GET `/api/location/:city`
-
-**Path Parameters:**
-  * `city` - name of city
-
-**Success Status Code:** `200`
-
-**Returns:** Array of JSON service IDs
-
-```json
-    {
-      "service_id": "Number"
     }
 ```
 
