@@ -26,7 +26,7 @@ CREATE TABLE gallery.photos_by_restaurant (
   -- photo info
   photo_id uuid, -- should be unique to photo
   photo_url text, -- url of photo
-  upload_date timestamp, -- optional, auto generated if not provided
+  upload_date text, -- optional, auto generated if not provided
   helpfulCount smallint, -- photo helpful count
   notHelpfulCount smallint, -- photo not helpful count
   caption text, -- photo caption
