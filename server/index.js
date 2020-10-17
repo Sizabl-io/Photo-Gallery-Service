@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const model = require('../db');
+const model = require('./dbs/mongo/db.js');
 
 const app = express();
 
@@ -29,13 +29,20 @@ const getPhotoById = (id, callback) => {
     else {
       callback(data);
     }
-  })
-}
+  });
+};
 
+
+
+// GET all photos
 app.get('/', (req, res) => {
+  console.log('Connecting to the pool...');
+  db.connectToPool()
+    .catch(err => console.log(err.stack));
   res.status(201).send('success!');
 });
 
+// GET photo based on id
 app.get('/photos/:id', (req, res) => {
   const pageId = req.params.id;
   // cosole.log(model.videogame.find)
@@ -45,5 +52,5 @@ app.get('/photos/:id', (req, res) => {
 });
 
 app.listen(3001, () => {
-  console.log('listening on PORT: 3003');
+  console.log('listening on http://localhost:3001');
 });

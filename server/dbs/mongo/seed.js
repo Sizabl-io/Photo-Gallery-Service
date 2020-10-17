@@ -1,6 +1,6 @@
 const faker = require('faker');
 const mongoose = require('mongoose');
-const db = require('./db');
+const db = require('./db.js');
 
 const { photo } = db;
 
