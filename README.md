@@ -28,7 +28,7 @@ Endpoints:
 </br>
 
 ### Get restaurant information matching id
-  * GET `/api/restaurant/:id`
+  * GET `/api/restaurants/:id`
 
 **Path Parameters:**
   * `id` - restaurant id
@@ -123,12 +123,12 @@ Endpoints:
 
 ```json
     {
-      "restaurant_id": "Number", -- restaurant to associate photo with
-      "gallery_id": "Number", -- gallery to associate photo with
-      "user_id": "Number", -- id user that posted the photo
-      "photo_url": "String", -- required
-      "upload_date": "String", -- required
-      "caption": "String", -- optional
+      "restaurant_id": "Number", // restaurant to associate photo with
+      "gallery_id": "Number", // gallery to associate photo with
+      "user_id": "Number", // id user that posted the photo
+      "photo_url": "String", // required
+      "upload_date": "String", // required
+      "caption": "String", // optional
     }
 ```
 
@@ -153,7 +153,7 @@ Endpoints:
 ```
 
 ### Delete photo matching id
-  * DELETE `/api/photo/:id`
+  * DELETE `/api/photos/:id`
 
 **Path Parameters:**
   * `id` - photo id
@@ -167,7 +167,7 @@ Endpoints:
 </br>
 
 ### Get all photos posted by a user
-  * GET `/api/users/:id/photos`
+  * GET `/api/users/photos/:id`
 
 **Path Parameters:**
   * `id` - user id
