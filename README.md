@@ -28,7 +28,7 @@ Endpoints:
 </br>
 
 ### Get restaurant information matching id
-  * GET `/api/restaurant/:id`
+  * GET `/api/restaurants/:id`
 
 **Path Parameters:**
   * `id` - restaurant id
@@ -153,7 +153,7 @@ Endpoints:
 ```
 
 ### Delete photo matching id
-  * DELETE `/api/photo/:id`
+  * DELETE `/api/photos/:id`
 
 **Path Parameters:**
   * `id` - photo id
@@ -167,7 +167,7 @@ Endpoints:
 </br>
 
 ### Get all photos posted by a user
-  * GET `/api/users/:id/photos`
+  * GET `/api/users/photos/:id`
 
 **Path Parameters:**
   * `id` - user id
