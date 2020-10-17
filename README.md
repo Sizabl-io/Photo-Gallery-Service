@@ -132,7 +132,6 @@ Endpoints:
     }
 ```
 
-
 ### Update individual photo info
   * PATCH `/api/photos/:id`
 
