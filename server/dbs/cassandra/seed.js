@@ -5,7 +5,7 @@ const _ = require('underscore');
 const path = require('path');
 const Faker = require('faker/lib');
 const { random } = require('underscore');
-const restaurant = require('./generated/restaurants.js');
+const restaurant = require('./restaurants.js');
 
 console.log(`Number of restaurants: ${restaurant.data.length}`);
 
@@ -20,7 +20,7 @@ const seedDB = async () => {
   const res = await db.client.execute('select * from gallery.restaurants');
 };
 
-const generateCSVFile = async (index) => {
+const generateCSVRecord = async (index) => {
 
   // randomly sample fake data to improve csv generation speed
   let randomPool = {
@@ -39,6 +39,7 @@ const generateCSVFile = async (index) => {
     caption: [],
     user_id: [],
     user_url: [],
+    user_profile_image: [],
     user_name: [],
     user_elite_status: [],
     user_review_count: [],
@@ -62,12 +63,14 @@ const generateCSVFile = async (index) => {
     const numSentences = faker.random.number(20) + 10;
     randomPool.caption.push(faker.lorem.sentence(numSentences));
     randomPool.user_id.push(i+1);
-    randomPool.user_url.push(`http://sizabl.io/users/${faker.internet.userName()}`);
-    randomPool.user_name.push(`${faker.name.firstName} ${faker.name.lastName}`);
+    const username = faker.internet.userName().replace('.', '');
+    randomPool.user_url.push(`http://sizabl.io/users/${username}`);
+    randomPool.user_profile_image.push(`https://photo-gallery-photos.s3-us-west-1.amazonaws.com/profile_pictures/${i+1}.jpg}`);
+    randomPool.user_name.push(`${faker.name.firstName()} ${faker.name.lastName()}`);
     randomPool.user_elite_status.push(faker.random.boolean());
-    randomPool.user_review_count.push(faker.random.number(500));
-    randomPool.user_friend_count.push(faker.random.number(1000));
-    randomPool.user_photo_count.push(faker.random.number(500));
+    randomPool.user_review_count.push(Math.round(Math.random() * 500));
+    randomPool.user_friend_count.push(Math.round(Math.random() * 1000));
+    randomPool.user_photo_count.push(Math.round(Math.random() * 500));
   }
 
   await generateRestaurantRecords(randomPool, index);
@@ -89,12 +92,14 @@ const generateRestaurantRecords = async (randomPool, index) => {
              {id: 'country' , title: 'country'},
              {id: 'zip' , title: 'zip'},
             ],
-    path: path.join(__dirname, 'generated', `restaurants_${index}.csv`),
+    path: path.join(__dirname, 'generated', 'restaurants', `restaurants_${index}.csv`),
   });
 
   let restaurantRecords = [];
 
-  for (let i = 1; i < chunkSize + 1; i++) {
+  const offset = chunkSize*index;
+
+  for (let i = offset; i < offset + chunkSize + 1; i++) {
     const record =
       {
         restaurant_id: i,
@@ -127,32 +132,36 @@ const generatePhotoRecords = async (randomPool, index) => {
               {id: 'caption' , title: 'caption'},
               {id: 'user_id' , title: 'user_id'},
               {id: 'user_url' , title: 'user_url'},
+              {id: 'user_profile_image' , title: 'user_profile_image'},
               {id: 'user_name' , title: 'user_name'},
               {id: 'user_elite_status' , title: 'user_elite_status'},
               {id: 'user_review_count' , title: 'user_review_count'},
               {id: 'user_friend_count' , title: 'user_friend_count'},
               {id: 'user_photo_count' , title: 'user_photo_count'}
             ],
-    path: path.join(__dirname, 'generated', `photos_${index}.csv`),
+    path: path.join(__dirname, 'generated', 'photos', `photos_${index}.csv`),
   });
 
   // the number of unique photos on S3
-  const maxPhotoID = 995;
+  const maxPhotoID = 1000;
 
   let photoRecords = [];
 
-  for (let i = 1; i < chunkSize + 1; i++) {
+  const offset = chunkSize*index;
+
+  for (let i = offset; i < offset + chunkSize + 1; i++) {
     const userId = sample();
     const record =
       {
         photo_id: i,
-        photo_url: `https://photo-gallery-photos.s3-us-west-1.amazonaws.com/food/${faker.random.number(1, maxPhotoID)}.jpg`,
+        photo_url: `https://photo-gallery-photos.s3-us-west-1.amazonaws.com/food/${Math.ceil(Math.random() * maxPhotoID)}.jpg`,
         upload_date: randomPool.upload_date[sample()],
-        helpfulCount: faker.random.number(200),
-        notHelpfulCount: faker.random.number(200),
+        helpfulCount: Math.round(Math.random() * 200),
+        notHelpfulCount: Math.round(Math.random() * 200),
         caption: randomPool.caption[sample()],
         user_id: userId+1, // offset to non-zero
         user_url: randomPool.user_url[userId],
+        user_profile_image: randomPool.user_profile_image[userId],
         user_name: randomPool.user_name[userId],
         user_elite_status: randomPool.user_elite_status[userId],
         user_review_count: randomPool.user_review_count[userId],
@@ -163,11 +172,12 @@ const generatePhotoRecords = async (randomPool, index) => {
     console.log(`Created photo record #${i}`);
   }
   await photoWriter.writeRecords(photoRecords);
+  console.log('Wrote photo records!');
 }
 
 const generateCSVRecords = async () => {
-  for (let i = 1; i < 2; i++) {
-    generateCSVFile(i);
+  for (let i = 0; i < 2; i++) {
+    await generateCSVRecord(i);
   }
 }
 

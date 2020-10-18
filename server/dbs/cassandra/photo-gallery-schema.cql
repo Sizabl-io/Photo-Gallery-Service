@@ -34,6 +34,7 @@ CREATE TABLE gallery.photos_by_restaurant (
   -- user info
   user_id uuid,
   user_url text, -- profile of user that uploaded
+  user_profile_image text,
   user_name text, -- user's full name
   user_elite_status boolean, -- whether user is elite
   user_review_count smallint, -- number of user's reviews
