@@ -3,7 +3,6 @@ const faker = require('faker/locale/en');
 const _ = require('underscore');
 const path = require('path');
 const restaurant = require('./restaurants.js');
-const { chunk } = require('underscore');
 
 const numRecords = 10000000;
 const numDocuments = 5;
@@ -13,7 +12,7 @@ let photoID = 1;
 let restaurantID = 1;
 
 // number of random samples
-const numSamples = 1000;
+const numSamples = 5000;
 
 const randomSample = () => {
   return Math.floor(Math.random() * numSamples);
@@ -48,7 +47,8 @@ let randomPool = {
 for (let i = 0; i < numSamples; i++) {
   faker.seed(i);
   randomPool.site_url.push(faker.internet.domainName());
-  const formattedRestaurantName = restaurant.data[i].replace(/ +(?= )/g,''); //replace multiple spaces with single space
+  const randomRestaurantIndex = Math.floor(Math.random() * restaurant.data.length);
+  const formattedRestaurantName = restaurant.data[randomRestaurantIndex].replace(/ +(?= )/g,''); //replace multiple spaces with single space
   randomPool.restaurant_name.push(formattedRestaurantName);
   randomPool.phone_number.push(faker.phone.phoneNumber());
   randomPool.city.push(faker.address.city());
@@ -162,7 +162,7 @@ const generateRestaurantRecords = async (index) => {
     });
 
     // set max number of records to write at a time to avoid overflow
-    const numRecordsToWrite = 10000;
+    const numRecordsToWrite = 1000;
     restaurantRecords = _.chunk(restaurantRecords, numRecordsToWrite);
     photoRecords = _.chunk(photoRecords, numRecordsToWrite);
 
