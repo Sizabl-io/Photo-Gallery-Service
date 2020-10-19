@@ -23,7 +23,7 @@
     "start": "node server/index.js",
     "react-dev": "webpack -d --watch",
     "react": "webpack -p",
-    "seed": "node server/dbs/seed.js",
+    "seed": "node --max-old-space-size=8192 server/dbs/seed.js",
     "seed-mongo": "node ./server/dbs/mongo/db,js"
   },
   "dependencies": {

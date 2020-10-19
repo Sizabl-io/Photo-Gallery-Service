@@ -2,10 +2,10 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const faker = require('faker/locale/en');
 const _ = require('underscore');
 const path = require('path');
-const Faker = require('faker/lib');
 const restaurant = require('./restaurants.js');
+const { chunk } = require('underscore');
 
-const numRecords = 100;
+const numRecords = 10000000;
 const numDocuments = 5;
 const chunkSize = numRecords / numDocuments;
 
@@ -72,7 +72,7 @@ for (let i = 0; i < numSamples; i++) {
 
 // generate (chunkSize) number of restaurant records with random number of photos
 const generateRestaurantRecords = async (index) => {
-  console.log('Connecting to restaurant CSV writer...');
+  console.log(`Generating restaurant CSV #${index}...`);
 
   let restaurantRecords = [];
   let photoRecords = [];
@@ -161,10 +161,20 @@ const generateRestaurantRecords = async (index) => {
       path: path.join(__dirname, 'generated', 'photos', `photos_${index}.csv`),
     });
 
-  await restaurantWriter.writeRecords(restaurantRecords);
-  await photoWriter.writeRecords(photoRecords);
-  console.log(`Wrote photo records chunk ${index}!`);
-  console.log(`Wrote restaurant record chunk #${index}!`);
+    // set max number of records to write at a time to avoid overflow
+    const numRecordsToWrite = 10000;
+    restaurantRecords = _.chunk(restaurantRecords, numRecordsToWrite);
+    photoRecords = _.chunk(photoRecords, numRecordsToWrite);
+
+    for (let i = 0; i < restaurantRecords.length; i++) {
+      await restaurantWriter.writeRecords(restaurantRecords[i]);
+      console.log(`Wrote restaurant record CSV #${index} chunk #${i}!`);
+    }
+
+    for (let i = 0; i < photoRecords.length; i++) {
+      await photoWriter.writeRecords(photoRecords[i]);
+      console.log(`Wrote photo records CSV #${index} chunk #${i}!`);
+    }
 };
 
 const generateCSVRecords = async () => {
