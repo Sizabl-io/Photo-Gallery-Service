@@ -68,17 +68,19 @@ CREATE TABLE "imports" (
   "upload_date" text
 );
 
+-- restaurant info chunk #1
 \copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_0.csv' CSV HEADER DELIMITER ','
 
+-- restaurant info chunk #2
 \copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_1.csv' CSV HEADER DELIMITER ','
 
-\copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_2.csv' CSV HEADER DELIMITER ','
+-- \copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_2.csv' CSV HEADER DELIMITER ','
 
-\copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_3.csv' CSV HEADER DELIMITER ','
+-- \copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_3.csv' CSV HEADER DELIMITER ','
 
-\copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_4.csv' CSV HEADER DELIMITER ','
+-- \copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_4.csv' CSV HEADER DELIMITER ','
 
--- photo chunk #1
+-- photo/users chunk #1
 \copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_0.csv' CSV HEADER DELIMITER ','
 
 INSERT INTO users SELECT user_id, user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image FROM imports ON CONFLICT DO NOTHING;
@@ -87,7 +89,7 @@ INSERT INTO photos SELECT photo_id, restaurant_id, user_id, helpful_count, not_h
 
 TRUNCATE imports;
 
--- photo chunk #2
+-- photo/users chunk #2
 \copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_1.csv' CSV HEADER DELIMITER ','
 
 INSERT INTO users SELECT user_id, user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image FROM imports ON CONFLICT DO NOTHING;
@@ -96,31 +98,31 @@ INSERT INTO photos SELECT photo_id, restaurant_id, user_id, helpful_count, not_h
 
 TRUNCATE imports;
 
--- photo chunk #3
-\copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_2.csv' CSV HEADER DELIMITER ','
+-- -- photo/users chunk #3
+-- \copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_2.csv' CSV HEADER DELIMITER ','
 
-INSERT INTO users SELECT user_id, user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image FROM imports ON CONFLICT DO NOTHING;
+-- INSERT INTO users SELECT user_id, user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image FROM imports ON CONFLICT DO NOTHING;
 
-INSERT INTO photos SELECT photo_id, restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date FROM imports;
+-- INSERT INTO photos SELECT photo_id, restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date FROM imports;
 
-TRUNCATE imports;
+-- TRUNCATE imports;
 
--- photo chunk #4
-\copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_3.csv' CSV HEADER DELIMITER ','
+-- -- photo/users chunk #4
+-- \copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_3.csv' CSV HEADER DELIMITER ','
 
-INSERT INTO users SELECT user_id, user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image FROM imports ON CONFLICT DO NOTHING;
+-- INSERT INTO users SELECT user_id, user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image FROM imports ON CONFLICT DO NOTHING;
 
-INSERT INTO photos SELECT photo_id, restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date FROM imports;
+-- INSERT INTO photos SELECT photo_id, restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date FROM imports;
 
-TRUNCATE imports;
+-- TRUNCATE imports;
 
--- photo chunk #5
-\copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_4.csv' CSV HEADER DELIMITER ','
+-- -- photo/users chunk #5
+-- \copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_4.csv' CSV HEADER DELIMITER ','
 
-INSERT INTO users SELECT user_id, user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image FROM imports ON CONFLICT DO NOTHING;
+-- INSERT INTO users SELECT user_id, user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image FROM imports ON CONFLICT DO NOTHING;
 
-INSERT INTO photos SELECT photo_id, restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date FROM imports;
+-- INSERT INTO photos SELECT photo_id, restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date FROM imports;
 
-TRUNCATE imports;
+-- TRUNCATE imports;
 
-DROP TABLE imports;
+-- DROP TABLE imports;

@@ -48,18 +48,18 @@ COPY gallery.restaurants (restaurant_id, restaurant_name, site_url, phone_number
 
 COPY gallery.restaurants (restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_1.csv' WITH HEADER=true AND DELIMITER=',';
 
-COPY gallery.restaurants (restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_2.csv' WITH HEADER=true AND DELIMITER=',';
+-- COPY gallery.restaurants (restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_2.csv' WITH HEADER=true AND DELIMITER=',';
 
-COPY gallery.restaurants (restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_3.csv' WITH HEADER=true AND DELIMITER=',';
+-- COPY gallery.restaurants (restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_3.csv' WITH HEADER=true AND DELIMITER=',';
 
-COPY gallery.restaurants (restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_4.csv' WITH HEADER=true AND DELIMITER=',';
+-- COPY gallery.restaurants (restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_4.csv' WITH HEADER=true AND DELIMITER=',';
 
 COPY gallery.photos_by_restaurant (restaurant_id, photo_id, photo_url, upload_date, helpfulCount, notHelpfulCount, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_0.csv' WITH HEADER=true AND DELIMITER=',';
 
 COPY gallery.photos_by_restaurant (restaurant_id, photo_id, photo_url, upload_date, helpfulCount, notHelpfulCount, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_1.csv' WITH HEADER=true AND DELIMITER=',';
 
-COPY gallery.photos_by_restaurant (restaurant_id, photo_id, photo_url, upload_date, helpfulCount, notHelpfulCount, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_2.csv' WITH HEADER=true AND DELIMITER=',';
+-- COPY gallery.photos_by_restaurant (restaurant_id, photo_id, photo_url, upload_date, helpfulCount, notHelpfulCount, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_2.csv' WITH HEADER=true AND DELIMITER=',';
 
-COPY gallery.photos_by_restaurant (restaurant_id, photo_id, photo_url, upload_date, helpfulCount, notHelpfulCount, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_3.csv' WITH HEADER=true AND DELIMITER=',';
+-- COPY gallery.photos_by_restaurant (restaurant_id, photo_id, photo_url, upload_date, helpfulCount, notHelpfulCount, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_3.csv' WITH HEADER=true AND DELIMITER=',';
 
-COPY gallery.photos_by_restaurant (restaurant_id, photo_id, photo_url, upload_date, helpfulCount, notHelpfulCount, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_4.csv' WITH HEADER=true AND DELIMITER=',';
+-- COPY gallery.photos_by_restaurant (restaurant_id, photo_id, photo_url, upload_date, helpfulCount, notHelpfulCount, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_4.csv' WITH HEADER=true AND DELIMITER=',';
