@@ -23,8 +23,7 @@
     "start": "node server/index.js",
     "react-dev": "webpack -d --watch",
     "react": "webpack -p",
-    "seed-postgres": "node server/dbs/postgres/seed.js",
-    "seed-cassandra": "node server/dbs/cassandra/seed.js",
+    "seed": "node server/dbs/seed.js",
     "seed-mongo": "node ./server/dbs/mongo/db,js"
   },
   "dependencies": {
