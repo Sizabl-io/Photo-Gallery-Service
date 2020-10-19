@@ -18,7 +18,6 @@ const connectToPool = async () => {
   console.log('Connected to pool!');
   // set the default schema
   const res = await client.query('SET search_path to public');
-  return client;
 };
 
 const releasePool = async () => {
@@ -28,7 +27,18 @@ const releasePool = async () => {
   console.log('Released the client');
 };
 
+const insertRestaurant = async (document, cb) => {
+  const { restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip } = document;
+  try {
+    const res = await client.query('INSERT into restaurants(restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip]);
+    cb(null, res);
+  } catch (err) {
+    cb(err, null);
+  }
+}
+
 module.exports = {
   connectToPool,
   releasePool,
+  insertRestaurant,
 };

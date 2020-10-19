@@ -126,3 +126,12 @@ TRUNCATE imports;
 -- TRUNCATE imports;
 
 -- DROP TABLE imports;
+
+-- update restaurant_id sequence
+SELECT setval(pg_get_serial_sequence('restaurants', 'restaurant_id'), coalesce(max(restaurant_id)+1, 1), false) FROM restaurants;
+
+-- update user_id sequence
+SELECT setval(pg_get_serial_sequence('users', 'user_id'), coalesce(max(user_id)+1, 1), false) FROM users;
+
+-- update photo_id sequence
+SELECT setval(pg_get_serial_sequence('photos', 'photo_id'), coalesce(max(photo_id)+1, 1), false) FROM photos;
