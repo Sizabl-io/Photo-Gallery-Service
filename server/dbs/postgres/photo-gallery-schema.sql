@@ -68,15 +68,15 @@ CREATE TABLE "imports" (
   "upload_date" text
 );
 
-\copy restaurants(restaurant_id, restaurant_name,site_url,phone_number,city,street,state_or_province,country,zip) FROM '../generated/restaurants/restaurants_0.csv' CSV HEADER DELIMITER ','
+\copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_0.csv' CSV HEADER DELIMITER ','
 
-\copy restaurants(restaurant_id, restaurant_name,site_url,phone_number,city,street,state_or_province,country,zip) FROM '../generated/restaurants/restaurants_1.csv' CSV HEADER DELIMITER ','
+\copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_1.csv' CSV HEADER DELIMITER ','
 
-\copy restaurants(restaurant_id, restaurant_name,site_url,phone_number,city,street,state_or_province,country,zip) FROM '../generated/restaurants/restaurants_2.csv' CSV HEADER DELIMITER ','
+\copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_2.csv' CSV HEADER DELIMITER ','
 
-\copy restaurants(restaurant_id, restaurant_name,site_url,phone_number,city,street,state_or_province,country,zip) FROM '../generated/restaurants/restaurants_3.csv' CSV HEADER DELIMITER ','
+\copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_3.csv' CSV HEADER DELIMITER ','
 
-\copy restaurants(restaurant_id, restaurant_name,site_url,phone_number,city,street,state_or_province,country,zip) FROM '../generated/restaurants/restaurants_4.csv' CSV HEADER DELIMITER ','
+\copy restaurants(restaurant_id, restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) FROM '../generated/restaurants/restaurants_4.csv' CSV HEADER DELIMITER ','
 
 -- photo chunk #1
 \copy imports(restaurant_id, photo_id, photo_url, upload_date, helpful_count, not_helpful_count, caption, user_id, user_url, user_profile_image, user_name, user_elite_status, user_review_count, user_friend_count, user_photo_count) FROM '../generated/photos/photos_0.csv' CSV HEADER DELIMITER ','

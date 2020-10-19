@@ -5,7 +5,7 @@ const path = require('path');
 const Faker = require('faker/lib');
 const restaurant = require('./restaurants.js');
 
-const numRecords = 10;
+const numRecords = 100;
 const numDocuments = 5;
 const chunkSize = numRecords / numDocuments;
 
@@ -127,8 +127,8 @@ const generateRestaurantRecords = async (index) => {
     const restaurantWriter = createCsvWriter({
       header: [
                {id: 'restaurant_id', title: 'restaurant_id'},
-               {id: 'site_url', title: 'site_url'},
                {id: 'restaurant_name' , title: 'restaurant_name'},
+               {id: 'site_url', title: 'site_url'},
                {id: 'phone_number' , title: 'phone_number'},
                {id: 'city' , title: 'city'},
                {id: 'street' , title: 'street'},
