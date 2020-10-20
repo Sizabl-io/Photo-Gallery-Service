@@ -11,7 +11,7 @@ const getAllPhotos = function(callback) {
   // need to query the database for all users
   // this function will be called in a controller triggered by a GET request
   // need to find how to do it without sqlLite
-  console.log(model.photo)
+  // console.log(model.photo)
   model.photo.find({}, (err, data) => {
     if (err) {
       throw err;

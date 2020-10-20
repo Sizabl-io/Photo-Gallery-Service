@@ -23,13 +23,13 @@
     "start": "node server/index.js",
     "react-dev": "webpack -d --watch",
     "react": "webpack -p",
-    "seed-postgres": "node server/dbs/postgres/seed.js",
-    "seed-cassandra": "node server/dbs/cassandra/seed.js",
+    "seed": "node --max-old-space-size=8192 server/dbs/seed.js",
     "seed-mongo": "node ./server/dbs/mongo/db,js"
   },
   "dependencies": {
     "babel-jest": "^26.2.2",
     "cassandra-driver": "^4.6.0",
+    "csv-writer": "^1.6.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "google-fonts-webpack-plugin": "^0.4.4",
@@ -45,7 +45,8 @@
     "prop-types": "^15.7.2",
     "puppeteer-core": "^5.2.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "underscore": "^1.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",

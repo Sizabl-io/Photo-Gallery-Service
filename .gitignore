@@ -26,4 +26,7 @@ dist/
 
 # Credentials
 *credentials.js
+
+# Old DB/CSV files
 *backup/
+*generated/
