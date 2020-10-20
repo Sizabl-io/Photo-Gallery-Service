@@ -20,7 +20,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors --watch",
-    "execution-time-postgres": "node server/dbs/postgres/executions.js",
+    "execution-time": "node server/dbs/tests.js",
     "start": "node server/index.js",
     "react-dev": "webpack -d --watch",
     "react": "webpack -p",
@@ -48,7 +48,8 @@
     "puppeteer-core": "^5.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "underscore": "^1.11.0"
+    "underscore": "^1.11.0",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",

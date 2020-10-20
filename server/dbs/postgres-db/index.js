@@ -13,14 +13,14 @@ pool.on('error', (err, client) => {
 let client;
 
 // async/await - check out a client from the pool
-const connectToPool = async () => {
+const connectToClient = async () => {
   client = await pool.connect();
   console.log('Connected to pool!');
   // set the default schema
   const res = await client.query('SET search_path to public');
 };
 
-const releasePool = async () => {
+const releaseClient = async () => {
   // Make sure to release the client before any error handling,
   // just in case the error handling itself throws an error.
   client.release();
@@ -95,8 +95,8 @@ const getClient = () => {
 }
 
 module.exports = {
-  connectToPool,
-  releasePool,
+  connectToClient,
+  releaseClient,
   insertRestaurant,
   selectRestaurant,
   insertUser,

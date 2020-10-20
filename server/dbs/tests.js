@@ -1,11 +1,17 @@
-const db = require('./db.js');
+const pgDB = require('./postgres-db');
+const cDB = require('./cassandra-db');
 const perf = require('execution-time')();
 const fs = require('fs');
 const path = require('path');
 
-const testAll = async () => {
+// measures the execution times for Postgres insert/read operations
+const testPostgres = async () => {
   let results = [];
-  await db.connectToPool();
+
+  // get a client to connect to the database
+  await pgDB.connectToClient();
+
+  // test documents
   const restaurantDoc = {
     restaurant_name: 'Farmhouse Kitchen Thai Cuisine',
     site_url: 'https://farmhousethai.com/',
@@ -16,6 +22,7 @@ const testAll = async () => {
     country: 'US',
     zip: '94110',
   };
+
   const userDoc = {
     user_url: 'http://sizabl.io/users/diao',
     user_name: 'diao',
@@ -25,6 +32,7 @@ const testAll = async () => {
     user_elite_status: true,
     user_profile_image: 'https://i.imgur.com/fPmznir.jpg',
   };
+
   const photoDoc = {
     restaurant_id: 1,
     user_id: 1,
@@ -34,12 +42,15 @@ const testAll = async () => {
     caption: 'Fine dining',
     upload_date: Date.now(),
   };
-  const numRestaurantRecords = await db.countRows('restaurants');
-  const numUserRecords = await db.countRows('users');
-  const numPhotoRecords = await db.countRows('photos');
 
+  // count the number of records in each table
+  const numRestaurantRecords = await pgDB.countRows('restaurants');
+  const numUserRecords = await pgDB.countRows('users');
+  const numPhotoRecords = await pgDB.countRows('photos');
+
+  // restaurant table measurements
   perf.start('insertRestaurant');
-  await db.insertRestaurant(restaurantDoc, (err, data) => {
+  await pgDB.insertRestaurant(restaurantDoc, (err, data) => {
     if (err) {
       throw err;
     }
@@ -47,8 +58,9 @@ const testAll = async () => {
     result.numRows = numRestaurantRecords;
     results.push(result);
   });
+
   perf.start('selectRestaurant');
-  await db.selectRestaurant(100, async (err, data) => {
+  await pgDB.selectRestaurant(100, async (err, data) => {
     if (err) {
       throw err;
     }
@@ -57,8 +69,9 @@ const testAll = async () => {
     results.push(result);
   });
 
+  // user table measurements
   perf.start('insertUser');
-  await db.insertUser(userDoc, (err, data) => {
+  await pgDB.insertUser(userDoc, (err, data) => {
     if (err) {
       throw err;
     }
@@ -66,8 +79,9 @@ const testAll = async () => {
     result.numRecords = numUserRecords;
     results.push(result);
   });
+
   perf.start('selectUser');
-  await db.selectUser(100, (err, data) => {
+  await pgDB.selectUser(100, (err, data) => {
     if (err) {
       throw err;
     }
@@ -76,8 +90,9 @@ const testAll = async () => {
     results.push(result);
   });
 
+  // photo table measurements
   perf.start('insertPhoto');
-  await db.insertPhoto(photoDoc, (err, data) => {
+  await pgDB.insertPhoto(photoDoc, (err, data) => {
     if (err) {
       throw err;
     }
@@ -85,8 +100,9 @@ const testAll = async () => {
     result.numRecords = numPhotoRecords;
     results.push(result);
   });
+
   perf.start('selectPhoto');
-  await db.selectUser(100, (err, data) => {
+  await pgDB.selectUser(100, (err, data) => {
     if (err) {
       throw err;
     }
@@ -95,8 +111,16 @@ const testAll = async () => {
     results.push(result);
   });
 
-  await db.releasePool();
-  fs.writeFileSync(path.join(__dirname, 'generated', 'time.txt'), JSON.stringify(results));
+  // release the pool
+  await pgDB.releaseClient();
+
+  // generate the JSON file
+  fs.writeFileSync(path.join(__dirname, 'generated', 'time.json'), JSON.stringify(results));
+};
+
+const testCassandra = async () => {
+  await client.execute(query
 }
 
-testAll();
+testPostgres();
+testCassandra();
