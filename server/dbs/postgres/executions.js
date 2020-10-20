@@ -55,6 +55,15 @@ const testAll = async () => {
     }
     timingResults.push(perf.stop('insertPhoto'));
   });
+
+  perf.start('selectRestaurant');
+  await db.selectRestaurant('Farmhouse Kitchen Thai Cuisine', (err, data) => {
+    if (err) {
+      throw err;
+    }
+    timingResults.push(perf.stop('selectRestaurant'));
+  });
+
   await db.releasePool();
   fs.writeFileSync(path.join(__dirname, 'generated', 'time.txt'), JSON.stringify(timingResults));
 }

@@ -37,6 +37,16 @@ const insertRestaurant = async (document, cb) => {
   }
 }
 
+const selectRestaurant = async (name, cb) => {
+  try {
+    const res = await client.query(`SELECT * from restaurants WHERE restaurant_name IN ('${name}')`);
+    cb(null, null);
+  } catch (err) {
+    cb(err, null);
+  }
+}
+
+
 const insertUser = async (document, cb) => {
   const { user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image } = document;
   try {
@@ -61,6 +71,7 @@ module.exports = {
   connectToPool,
   releasePool,
   insertRestaurant,
+  selectRestaurant,
   insertUser,
   insertPhoto,
 };
