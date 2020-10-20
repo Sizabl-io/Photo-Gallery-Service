@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const testAll = async () => {
-  let timingResults = [];
+  let results = [];
   await db.connectToPool();
   const restaurantDoc = {
     restaurant_name: 'Farmhouse Kitchen Thai Cuisine',
@@ -34,38 +34,69 @@ const testAll = async () => {
     caption: 'Fine dining',
     upload_date: Date.now(),
   };
+  const numRestaurantRecords = await db.countRows('restaurants');
+  const numUserRecords = await db.countRows('users');
+  const numPhotoRecords = await db.countRows('photos');
+
   perf.start('insertRestaurant');
   await db.insertRestaurant(restaurantDoc, (err, data) => {
     if (err) {
       throw err;
     }
-    timingResults.push(perf.stop('insertRestaurant'));
+    const result = perf.stop('insertRestaurant');
+    result.numRows = numRestaurantRecords;
+    results.push(result);
   });
+  perf.start('selectRestaurant');
+  await db.selectRestaurant(100, async (err, data) => {
+    if (err) {
+      throw err;
+    }
+    const result = perf.stop('selectRestaurant');
+    result.numRows = numRestaurantRecords;
+    results.push(result);
+  });
+
   perf.start('insertUser');
   await db.insertUser(userDoc, (err, data) => {
     if (err) {
       throw err;
     }
-    timingResults.push(perf.stop('insertUser'));
+    const result = perf.stop('insertUser');
+    result.numRecords = numUserRecords;
+    results.push(result);
   });
+  perf.start('selectUser');
+  await db.selectUser(100, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    const result = perf.stop('selectUser');
+    result.numRecords = numUserRecords;
+    results.push(result);
+  });
+
   perf.start('insertPhoto');
   await db.insertPhoto(photoDoc, (err, data) => {
     if (err) {
       throw err;
     }
-    timingResults.push(perf.stop('insertPhoto'));
+    const result = perf.stop('insertPhoto');
+    result.numRecords = numPhotoRecords;
+    results.push(result);
   });
-
-  perf.start('selectRestaurant');
-  await db.selectRestaurant('Farmhouse Kitchen Thai Cuisine', (err, data) => {
+  perf.start('selectPhoto');
+  await db.selectUser(100, (err, data) => {
     if (err) {
       throw err;
     }
-    timingResults.push(perf.stop('selectRestaurant'));
+    const result = perf.stop('selectPhoto');
+    result.numRecords = numPhotoRecords;
+    results.push(result);
   });
 
   await db.releasePool();
-  fs.writeFileSync(path.join(__dirname, 'generated', 'time.txt'), JSON.stringify(timingResults));
+  fs.writeFileSync(path.join(__dirname, 'generated', 'time.txt'), JSON.stringify(results));
 }
 
 testAll();

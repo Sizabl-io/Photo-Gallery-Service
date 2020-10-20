@@ -37,20 +37,28 @@ const insertRestaurant = async (document, cb) => {
   }
 }
 
-const selectRestaurant = async (name, cb) => {
+const selectRestaurant = async (id, cb) => {
   try {
-    const res = await client.query(`SELECT * from restaurants WHERE restaurant_name IN ('${name}')`);
-    cb(null, null);
+    const res = await client.query(`SELECT * from restaurants WHERE restaurant_id = ${id}`);
+    cb(null, res);
   } catch (err) {
     cb(err, null);
   }
 }
 
-
 const insertUser = async (document, cb) => {
   const { user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image } = document;
   try {
     const res = await client.query('INSERT into users(user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image) VALUES($1, $2, $3, $4, $5, $6, $7)', [user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image]);
+    cb(null, res);
+  } catch (err) {
+    cb(err, null);
+  }
+}
+
+const selectUser = async (id, cb) => {
+  try {
+    const res = await client.query(`SELECT * from users WHERE user_id = ${id}`);
     cb(null, res);
   } catch (err) {
     cb(err, null);
@@ -67,11 +75,34 @@ const insertPhoto = async (document, cb) => {
   }
 }
 
+const selectPhoto = async (id, cb) => {
+  try {
+    const res = await client.query(`SELECT * from photos WHERE photo_id = ${id}`);
+    cb(null, res);
+  } catch (err) {
+    cb(err, null);
+  }
+}
+
+// count the number of table rows
+const countRows = async (table) => {
+  const res = await client.query(`SELECT reltuples::bigint AS estimate FROM pg_class where relname='${table}'`);
+  return res.rows[0].estimate;
+}
+
+const getClient = () => {
+  return client;
+}
+
 module.exports = {
   connectToPool,
   releasePool,
   insertRestaurant,
   selectRestaurant,
   insertUser,
+  selectUser,
   insertPhoto,
+  selectPhoto,
+  countRows,
+  getClient,
 };

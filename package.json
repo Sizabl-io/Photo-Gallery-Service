@@ -31,6 +31,7 @@
     "babel-jest": "^26.2.2",
     "cassandra-driver": "^4.6.0",
     "csv-writer": "^1.6.0",
+    "execution-time": "^1.4.1",
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "google-fonts-webpack-plugin": "^0.4.4",
