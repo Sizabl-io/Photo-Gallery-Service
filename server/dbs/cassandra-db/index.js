@@ -31,9 +31,10 @@ const insertPhoto = async (document, cb) => {
   }
 }
 
-const selectPhoto = async (id, cb) => {
+// select a photo by restaurant_uuid
+const selectPhotoByID = async (restaurant_uuid, cb) => {
   try {
-    const res = await client.execute(`SELECT * FROM photos_by_restaurant WHERE restaurant_uuid = ?`, [id], { prepare: true });
+    const res = await client.execute(`SELECT * FROM photos_by_restaurant WHERE restaurant_uuid = ?`, [restaurant_uuid], { prepare: true });
     cb(null, res);
   } catch(err) {
     cb(err, null);
@@ -43,5 +44,5 @@ const selectPhoto = async (id, cb) => {
 module.exports = {
   insertRestaurant,
   insertPhoto,
-  selectPhoto,
+  selectPhotoByID,
 };

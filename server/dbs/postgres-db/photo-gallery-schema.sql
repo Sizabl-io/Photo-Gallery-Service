@@ -1,13 +1,13 @@
--- DROP DATABASE IF EXISTS gallery;
+DROP DATABASE IF EXISTS gallery;
 CREATE DATABASE gallery;
 
 \c gallery
 SET search_path TO public;
 
--- DROP TABLE IF EXISTS imports;
--- DROP TABLE IF EXISTS photos;
--- DROP TABLE IF EXISTS users;
--- DROP TABLE IF EXISTS restaurants;
+DROP TABLE IF EXISTS user_imports;
+DROP TABLE IF EXISTS photos;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS restaurants;
 
 -- restaurants table
 CREATE TABLE "restaurants" (
@@ -25,6 +25,8 @@ CREATE TABLE "restaurants" (
   "zip" varchar(15)
 );
 
+CREATE INDEX idx_restaurant_name ON restaurants(restaurant_name);
+
 -- users who uploaded photos
 CREATE TABLE "users" (
   "user_id" SERIAL PRIMARY KEY,
@@ -37,6 +39,8 @@ CREATE TABLE "users" (
   "user_profile_image" varchar(255)
 );
 
+CREATE INDEX idx_user_name ON users(user_name);
+
 -- photos table grouped by gallery id
 CREATE TABLE "photos" (
   "photo_id" SERIAL PRIMARY KEY,
@@ -48,6 +52,8 @@ CREATE TABLE "photos" (
   "caption" text,
   "upload_date" text
 );
+
+CREATE INDEX idx_user_id ON photos(user_id);
 
 -- users who uploaded photos
 CREATE TABLE "user_imports" (
@@ -116,7 +122,7 @@ TRUNCATE user_imports;
 
 \copy photos(photo_id, restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date) FROM '../generated/postgres/photos/photos_4.csv' CSV HEADER DELIMITER ',';
 
-DROP user_imports;
+DROP TABLE user_imports;
 
 -- update restaurant_id sequence
 SELECT setval(pg_get_serial_sequence('restaurants', 'restaurant_id'), coalesce(max(restaurant_id)+1, 1), false) FROM restaurants;

@@ -49,24 +49,19 @@ const testPostgres = async () => {
   const numPhotoRecords = await pgDB.countRows('photos');
 
   // restaurant table measurements
-  perf.start('Postgres: insertRestaurant');
   await pgDB.insertRestaurant(restaurantDoc, (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('Postgres: insertRestaurant');
-    result.numRows = numRestaurantRecords;
-    results.push(result);
+    results.push(data.rows);
   });
 
-  perf.start('Postgres: selectRestaurant');
-  await pgDB.selectRestaurant(100, async (err, data) => {
+  perf.start('Postgres: selectRestaurantByID');
+  await pgDB.selectRestaurantByID(100, async (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('Postgres: selectRestaurant');
-    result.numRows = numRestaurantRecords;
-    results.push(result);
+    results.push(data.rows);
   });
 
   // user table measurements
@@ -75,19 +70,15 @@ const testPostgres = async () => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('Postgres: insertUser');
-    result.numRecords = numUserRecords;
-    results.push(result);
+    results.push(data.rows);
   });
 
-  perf.start('Postgres: selectUser');
-  await pgDB.selectUser(100, (err, data) => {
+  perf.start('Postgres: selectUserByID');
+  await pgDB.selectUserByID(100, (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('Postgres: selectUser');
-    result.numRecords = numUserRecords;
-    results.push(result);
+    results.push(data.rows);
   });
 
   // photo table measurements
@@ -96,19 +87,15 @@ const testPostgres = async () => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('Postgres: insertPhoto');
-    result.numRecords = numPhotoRecords;
-    results.push(result);
+    results.push(data.rows);
   });
 
-  perf.start('Postgres: selectPhoto');
-  await pgDB.selectUser(100, (err, data) => {
+  perf.start('Postgres: selectPhotoByID');
+  await pgDB.selectPhotoByID(100, (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('Postgres: selectPhoto');
-    result.numRecords = numPhotoRecords;
-    results.push(result);
+    results.push(data.rows);
   });
 
   // release the pool
@@ -164,12 +151,12 @@ const testCassandra = async () => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('Postgres: insertPhoto');
+    const result = perf.stop('Cassandra: insertPhoto');
     results.push(result);
   });
 
-  perf.start('Cassandra: selectPhoto');
-  await cDB.selectPhoto(inserted_restaurant_id, (err, id) => {
+  perf.start('Cassandra: selectPhotoByID');
+  await cDB.selectPhotoByID(inserted_restaurant_id, (err, id) => {
     if (err) {
       throw err;
     }

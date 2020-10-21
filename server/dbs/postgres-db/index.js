@@ -30,16 +30,16 @@ const releaseClient = async () => {
 const insertRestaurant = async (document, cb) => {
   const { restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip } = document;
   try {
-    const res = await client.query('INSERT into restaurants(restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip]);
+    const res = await client.query('EXPLAIN ANALYZE INSERT into restaurants(restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) VALUES($1, $2, $3, $4, $5, $6, $7, $8)', [restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip]);
     cb(null, res);
   } catch (err) {
     cb(err, null);
   }
 }
 
-const selectRestaurant = async (id, cb) => {
+const selectRestaurantByID = async (id, cb) => {
   try {
-    const res = await client.query(`SELECT * from restaurants WHERE restaurant_id = ${id}`);
+    const res = await client.query(`EXPLAIN ANALYZE SELECT * from restaurants WHERE restaurant_id = ${id}`);
     cb(null, res);
   } catch (err) {
     cb(err, null);
@@ -56,9 +56,9 @@ const insertUser = async (document, cb) => {
   }
 }
 
-const selectUser = async (id, cb) => {
+const selectUserByID = async (id, cb) => {
   try {
-    const res = await client.query(`SELECT * from users WHERE user_id = ${id}`);
+    const res = await client.query(`EXPLAIN ANALYZE SELECT * from users WHERE user_id = ${id}`);
     cb(null, res);
   } catch (err) {
     cb(err, null);
@@ -75,9 +75,9 @@ const insertPhoto = async (document, cb) => {
   }
 }
 
-const selectPhoto = async (id, cb) => {
+const selectPhotoByID = async (id, cb) => {
   try {
-    const res = await client.query(`SELECT * from photos WHERE photo_id = ${id}`);
+    const res = await client.query(`EXPLAIN ANALYZE SELECT * from photos WHERE photo_id = ${id}`);
     cb(null, res);
   } catch (err) {
     cb(err, null);
@@ -86,7 +86,7 @@ const selectPhoto = async (id, cb) => {
 
 // count the number of table rows
 const countRows = async (table) => {
-  const res = await client.query(`SELECT reltuples::bigint AS estimate FROM pg_class where relname='${table}'`);
+  const res = await client.query(`EXPLAIN ANALYZE SELECT reltuples::bigint AS estimate FROM pg_class where relname='${table}'`);
   return res.rows[0].estimate;
 }
 
@@ -98,11 +98,11 @@ module.exports = {
   connectToClient,
   releaseClient,
   insertRestaurant,
-  selectRestaurant,
+  selectRestaurantByID,
   insertUser,
-  selectUser,
+  selectUserByID,
   insertPhoto,
-  selectPhoto,
+  selectPhotoByID,
   countRows,
   getClient,
 };
