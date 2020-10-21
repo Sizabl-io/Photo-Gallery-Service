@@ -1,6 +1,6 @@
-DROP KEYSPACE IF EXISTS gallery;
-CREATE KEYSPACE gallery
-WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
+-- DROP KEYSPACE IF EXISTS gallery;
+-- CREATE KEYSPACE gallery
+-- WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
 
 -- general info about a restaurant/merchant
 CREATE TABLE gallery.restaurants (

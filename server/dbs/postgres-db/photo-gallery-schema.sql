@@ -1,13 +1,13 @@
-DROP DATABASE IF EXISTS gallery;
+-- DROP DATABASE IF EXISTS gallery;
 CREATE DATABASE gallery;
 
 \c gallery
 SET search_path TO public;
 
-DROP TABLE IF EXISTS imports;
-DROP TABLE IF EXISTS photos;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS restaurants;
+-- DROP TABLE IF EXISTS imports;
+-- DROP TABLE IF EXISTS photos;
+-- DROP TABLE IF EXISTS users;
+-- DROP TABLE IF EXISTS restaurants;
 
 -- restaurants table
 CREATE TABLE "restaurants" (

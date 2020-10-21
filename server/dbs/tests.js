@@ -40,7 +40,7 @@ const testPostgres = async () => {
     not_helpful_count: 100,
     photo_url: 'https://www.cliseetiquette.com/wp-content/uploads/2019/09/waiter-serving-food.jpg',
     caption: 'Fine dining',
-    upload_date: Date.now(),
+    upload_date: Date.now().toString(),
   };
 
   // count the number of records in each table
@@ -49,64 +49,64 @@ const testPostgres = async () => {
   const numPhotoRecords = await pgDB.countRows('photos');
 
   // restaurant table measurements
-  perf.start('insertRestaurant');
+  perf.start('Postgres: insertRestaurant');
   await pgDB.insertRestaurant(restaurantDoc, (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('insertRestaurant');
+    const result = perf.stop('Postgres: insertRestaurant');
     result.numRows = numRestaurantRecords;
     results.push(result);
   });
 
-  perf.start('selectRestaurant');
+  perf.start('Postgres: selectRestaurant');
   await pgDB.selectRestaurant(100, async (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('selectRestaurant');
+    const result = perf.stop('Postgres: selectRestaurant');
     result.numRows = numRestaurantRecords;
     results.push(result);
   });
 
   // user table measurements
-  perf.start('insertUser');
+  perf.start('Postgres: insertUser');
   await pgDB.insertUser(userDoc, (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('insertUser');
+    const result = perf.stop('Postgres: insertUser');
     result.numRecords = numUserRecords;
     results.push(result);
   });
 
-  perf.start('selectUser');
+  perf.start('Postgres: selectUser');
   await pgDB.selectUser(100, (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('selectUser');
+    const result = perf.stop('Postgres: selectUser');
     result.numRecords = numUserRecords;
     results.push(result);
   });
 
   // photo table measurements
-  perf.start('insertPhoto');
+  perf.start('Postgres: insertPhoto');
   await pgDB.insertPhoto(photoDoc, (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('insertPhoto');
+    const result = perf.stop('Postgres: insertPhoto');
     result.numRecords = numPhotoRecords;
     results.push(result);
   });
 
-  perf.start('selectPhoto');
+  perf.start('Postgres: selectPhoto');
   await pgDB.selectUser(100, (err, data) => {
     if (err) {
       throw err;
     }
-    const result = perf.stop('selectPhoto');
+    const result = perf.stop('Postgres: selectPhoto');
     result.numRecords = numPhotoRecords;
     results.push(result);
   });
@@ -115,11 +115,69 @@ const testPostgres = async () => {
   await pgDB.releaseClient();
 
   // generate the JSON file
-  fs.writeFileSync(path.join(__dirname, 'generated', 'time.json'), JSON.stringify(results));
+  fs.writeFileSync(path.join(__dirname, 'generated', 'postgres_benchmark.json'), JSON.stringify(results));
 };
 
 const testCassandra = async () => {
-  await client.execute(query
+  let results = [];
+  const restaurantDoc = {
+    restaurant_name: 'Farmhouse Kitchen Thai Cuisine',
+    site_url: 'https://farmhousethai.com/',
+    phone_number: '415-814-2920',
+    city: 'San Francisco',
+    street: '710 Florida St.',
+    state_or_province: 'CA',
+    country: 'US',
+    zip: '94110',
+  };
+
+  let inserted_restaurant_id = null;
+
+  perf.start('Cassandra: insertRestaurant');
+  await cDB.insertRestaurant(restaurantDoc, (err, id) => {
+    if (err) {
+      throw err;
+    }
+    const result = perf.stop('Cassandra: insertRestaurant');
+    inserted_restaurant_id = id;
+    results.push(result);
+  });
+
+  const photoDoc = {
+    restaurant_uuid: inserted_restaurant_id,
+    photo_url: 'https://www.cliseetiquette.com/wp-content/uploads/2019/09/waiter-serving-food.jpg',
+    upload_date: Date.now().toString(),
+    helpful_count: 100,
+    not_helpful_count: 100,
+    caption: 'Fine dining',
+    user_url: 'http://sizabl.io/users/diao',
+    user_profile_image: 'https://i.imgur.com/fPmznir.jpg',
+    user_name: 'diao',
+    user_elite_status: true,
+    uesr_review_count: 1000,
+    user_friend_count: 1000,
+    user_photo_count: 99,
+  };
+
+  perf.start('Cassandra: insertPhoto');
+  await cDB.insertPhoto(photoDoc, (err, id) => {
+    if (err) {
+      throw err;
+    }
+    const result = perf.stop('Postgres: insertPhoto');
+    results.push(result);
+  });
+
+  perf.start('Cassandra: selectPhoto');
+  await cDB.selectPhoto(inserted_restaurant_id, (err, id) => {
+    if (err) {
+      throw err;
+    }
+    const result = perf.stop('Cassandra: selectPhoto');
+    results.push(result);
+  });
+
+  fs.writeFileSync(path.join(__dirname, 'generated', 'cassandra_benchmark.json'), JSON.stringify(results));
 }
 
 testPostgres();
