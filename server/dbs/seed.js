@@ -5,7 +5,7 @@ const path = require('path');
 const restaurant = require('./restaurant-data');
 const { v4: uuidv4 } = require('uuid');
 
-const numRecords = 5000000;
+const numRecords = 10000000;
 const numDocuments = 5;
 const chunkSize = numRecords / numDocuments;
 
@@ -13,7 +13,7 @@ let photo_id = 1;
 let restaurant_id = 1;
 
 // number of random samples
-const numSamples = 5000;
+const numSamples = 1000;
 
 const randomSample = () => {
   return Math.floor(Math.random() * numSamples);
@@ -58,12 +58,12 @@ for (let i = 0; i < numSamples; i++) {
   // randomPool.country.push(faker.address.countryCode());
   randomPool.zip.push(faker.address.zipCode());
   randomPool.upload_date.push(faker.date.past());
-  const numSentences = faker.random.number(20) + 10;
-  randomPool.caption.push(faker.lorem.sentence(numSentences));
+  const numWords = faker.random.number(5) + 5;
+  randomPool.caption.push(faker.lorem.sentence(numWords));
   randomPool.user_id.push(i+1);
   const username = faker.internet.userName().replace('.', '');
   randomPool.user_url.push(`http://sizabl.io/users/${username}`);
-  randomPool.user_profile_image.push(`https://photo-gallery-photos.s3-us-west-1.amazonaws.com/profile_pictures/${i+1}.jpg}`);
+  randomPool.user_profile_image.push(`profile_pictures/${i+1}.jpg`);
   randomPool.user_name.push(`${faker.name.firstName()} ${faker.name.lastName()}`);
   randomPool.user_elite_status.push(faker.random.boolean());
   randomPool.user_review_count.push(Math.round(Math.random() * 500));

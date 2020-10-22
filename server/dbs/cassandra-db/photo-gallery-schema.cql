@@ -19,7 +19,7 @@ CREATE TABLE gallery.restaurants (
   PRIMARY KEY (restaurant_uuid) -- partition by restaurant id
 ) WITH comment = 'Q1. General info about a restaurant';
 
--- photos associated WITH a restaurant
+-- photos associated with a restaurant
 CREATE TABLE gallery.photos_by_restaurant (
   restaurant_uuid uuid,
 

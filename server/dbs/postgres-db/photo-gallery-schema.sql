@@ -25,8 +25,6 @@ CREATE TABLE "restaurants" (
   "zip" varchar(15)
 );
 
-CREATE INDEX idx_restaurant_name ON restaurants(restaurant_name);
-
 -- users who uploaded photos
 CREATE TABLE "users" (
   "user_id" SERIAL PRIMARY KEY,
@@ -39,8 +37,6 @@ CREATE TABLE "users" (
   "user_profile_image" varchar(255)
 );
 
-CREATE INDEX idx_user_name ON users(user_name);
-
 -- photos table grouped by gallery id
 CREATE TABLE "photos" (
   "photo_id" SERIAL PRIMARY KEY,
@@ -52,8 +48,6 @@ CREATE TABLE "photos" (
   "caption" text,
   "upload_date" text
 );
-
-CREATE INDEX idx_user_id ON photos(user_id);
 
 -- users who uploaded photos
 CREATE TABLE "user_imports" (
@@ -132,3 +126,8 @@ SELECT setval(pg_get_serial_sequence('users', 'user_id'), coalesce(max(user_id)+
 
 -- update photo_id sequence
 SELECT setval(pg_get_serial_sequence('photos', 'photo_id'), coalesce(max(photo_id)+1, 1), false) FROM photos;
+
+CREATE INDEX idx_restaurant_name ON restaurants(restaurant_name);
+CREATE INDEX idx_user_name ON users(user_name);
+CREATE INDEX idx_restaurant_id ON photos(restaurant_id);
+CREATE INDEX idx_user_id ON photos(user_id);
