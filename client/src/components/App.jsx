@@ -1,5 +1,6 @@
 import React from 'react';
 import fetch from 'node-fetch'
+import axios from 'axios';
 import PhotoList from './PhotoList.jsx';
 import Header from './Header.jsx';
 import Body from './Body.jsx';
@@ -26,7 +27,30 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getPhotos();
+    this.getRestaurantGallery();
+    // this.getPhotos();
+  }
+
+  getRestaurantGallery() {
+    const numRestaurants = 10000000;
+    let imageList = [];
+    axios.get(`/api/galleries/${Math.round(Math.random() * numRestaurants)}`)
+      .then(res => {
+        console.log(JSON.stringify(res));
+        res.data.gallery.forEach(image => {
+          imageList.push(image.photo_url);
+        });
+        this.setState({
+          data: res.data,
+          pageBanner: imageList.slice(0,4),
+          currentImage: imageList[0],
+          imageList: imageList,
+          reference: React.createRef(),
+        });
+      })
+      .catch(err => {
+        throw err;
+      });
   }
 
   getPhotos() {

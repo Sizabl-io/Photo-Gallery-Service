@@ -16,7 +16,6 @@ let client;
 // async/await - check out a client from the pool
 const connectToClient = async () => {
   client = await pool.connect();
-  console.log('Connected to pool!');
   // set the default schema
   const res = await client.query('SET search_path to public');
 };

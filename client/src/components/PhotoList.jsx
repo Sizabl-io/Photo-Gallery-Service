@@ -4,12 +4,12 @@ import classes from '../style/App.module.css';
 
 const PhotoList = (props) => {
   return (
-    <ul className={classes.body} >
+    <div className={classes.body} >
       {props.photos.map((photo, key) => {
         return <Photo setPic={props.setPic} toggleModal={props.toggleModal} key={key} photo={photo}/>
       })
       }
-    </ul>
+    </div>
 );
 
 }
