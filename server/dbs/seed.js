@@ -106,17 +106,6 @@ const generateRestaurantRecords = async (index) => {
       zip,
     }
 
-    const cRestaurantRecord = {
-      restaurant_uuid,
-      restaurant_name,
-      site_url,
-      phone_number,
-      city,
-      street,
-      state_or_province,
-      country,
-      zip
-    }
     // number of photos for the specific restaurant
     const numPhotos = Math.ceil(Math.random() * 10);
 
@@ -159,31 +148,12 @@ const generateRestaurantRecords = async (index) => {
         upload_date,
       }
 
-      const cPhotoRecord = {
-        restaurant_uuid,
-        photo_uuid,
-        photo_url,
-        upload_date,
-        helpful_count,
-        not_helpful_count,
-        caption,
-        user_uuid,
-        user_url,
-        user_profile_image,
-        user_name,
-        user_elite_status,
-        user_review_count,
-        user_friend_count,
-        user_photo_count,
-      }
       pgUserRecords.push(pgUserRecord);
       pgPhotoRecords.push(pgPhotoRecord);
-      cPhotoRecords.push(cPhotoRecord);
       photo_id += 1;
     }
 
     pgRestaurantRecords.push(pgRestaurantRecord);
-    cRestaurantRecords.push(cRestaurantRecord);
     restaurant_id += 1;
   }
 
@@ -201,22 +171,6 @@ const generateRestaurantRecords = async (index) => {
               {id: 'zip' , title: 'zip'},
             ],
     path: path.join(__dirname, 'generated', 'postgres', 'restaurants', `restaurants_${index}.csv`),
-  });
-
-  // cassandra restaurant writer
-  const cRestaurantWriter = createCsvWriter({
-    header: [
-              {id: 'restaurant_uuid', title: 'restaurant_uuid'},
-              {id: 'restaurant_name' , title: 'restaurant_name'},
-              {id: 'site_url', title: 'site_url'},
-              {id: 'phone_number' , title: 'phone_number'},
-              {id: 'city' , title: 'city'},
-              {id: 'street' , title: 'street'},
-              {id: 'state_or_province' , title: 'state_or_province'},
-              {id: 'country' , title: 'country'},
-              {id: 'zip' , title: 'zip'},
-            ],
-    path: path.join(__dirname, 'generated', 'cassandra','restaurants', `restaurants_${index}.csv`),
   });
 
   // pg photo writer
@@ -249,44 +203,15 @@ const generateRestaurantRecords = async (index) => {
     path: path.join(__dirname, 'generated', 'postgres', 'users', `users_${index}.csv`),
   });
 
-  // cassandra photo/user writer
-  const cPhotoWriter = createCsvWriter({
-    header: [
-              {id: 'restaurant_uuid', title: 'restaurant_uuid'},
-              {id: 'photo_uuid' , title: 'photo_uuid'},
-              {id: 'photo_url' , title: 'photo_url'},
-              {id: 'upload_date' , title: 'upload_date'},
-              {id: 'helpful_count' , title: 'helpful_count'},
-              {id: 'not_helpful_count' , title: 'not_helpful_count'},
-              {id: 'caption' , title: 'caption'},
-              {id: 'user_uuid' , title: 'user_uuid'},
-              {id: 'user_url' , title: 'user_url'},
-              {id: 'user_profile_image' , title: 'user_profile_image'},
-              {id: 'user_name' , title: 'user_name'},
-              {id: 'user_elite_status' , title: 'user_elite_status'},
-              {id: 'user_review_count' , title: 'user_review_count'},
-              {id: 'user_friend_count' , title: 'user_friend_count'},
-              {id: 'user_photo_count' , title: 'user_photo_count'}
-            ],
-    path: path.join(__dirname, 'generated', 'cassandra', 'photos', `photos_${index}.csv`),
-  });
-
   // set max number of records to write at a time to avoid overflow
   const numRecordsToWrite = 1000;
   pgRestaurantRecords = _.chunk(pgRestaurantRecords, numRecordsToWrite);
-  cRestaurantRecords = _.chunk(cRestaurantRecords, numRecordsToWrite);
   pgUserRecords = _.chunk(pgUserRecords, numRecordsToWrite);
   pgPhotoRecords = _.chunk(pgPhotoRecords, numRecordsToWrite);
-  cPhotoRecords = _.chunk(cPhotoRecords, numRecordsToWrite);
 
   for (let i = 0; i < pgRestaurantRecords.length; i++) {
     await pgRestaurantWriter.writeRecords(pgRestaurantRecords[i]);
     console.log(`Wrote Postgres restaurant record CSV #${index} chunk #${i}!`);
-  }
-
-  for (let i = 0; i < cRestaurantRecords.length; i++) {
-    await cRestaurantWriter.writeRecords(cRestaurantRecords[i]);
-    console.log(`Wrote Cassandra restaurant record CSV #${index} chunk #${i}!`);
   }
 
   for (let i = 0; i < pgUserRecords.length; i++) {
@@ -297,11 +222,6 @@ const generateRestaurantRecords = async (index) => {
   for (let i = 0; i < pgPhotoRecords.length; i++) {
     await pgPhotoWriter.writeRecords(pgPhotoRecords[i]);
     console.log(`Wrote Postgres photo record CSV #${index} chunk #${i}!`);
-  }
-
-  for (let i = 0; i < cPhotoRecords.length; i++) {
-    await cPhotoWriter.writeRecords(cPhotoRecords[i]);
-    console.log(`Wrote Cassandra photo record CSV #${index} chunk #${i}!`);
   }
 };
 
