@@ -44,31 +44,32 @@ let randomPool = {
   user_photo_count: [],
 }
 
-
-for (let i = 0; i < numSamples; i++) {
-  faker.seed(i);
-  randomPool.site_url.push(faker.internet.domainName());
-  const randomRestaurantIndex = Math.floor(Math.random() * restaurant.data.length);
-  const formattedRestaurantName = restaurant.data[randomRestaurantIndex].replace(/ +(?= )/g,''); //replace multiple spaces with single space
-  randomPool.restaurant_name.push(formattedRestaurantName);
-  randomPool.phone_number.push(faker.phone.phoneNumber());
-  randomPool.city.push(faker.address.city());
-  randomPool.street.push(faker.address.streetName());
-  randomPool.state_or_province.push(faker.address.stateAbbr());
-  // randomPool.country.push(faker.address.countryCode());
-  randomPool.zip.push(faker.address.zipCode());
-  randomPool.upload_date.push(faker.date.past());
-  const numWords = faker.random.number(5) + 5;
-  randomPool.caption.push(faker.lorem.sentence(numWords));
-  randomPool.user_id.push(i+1);
-  const username = faker.internet.userName().replace('.', '');
-  randomPool.user_url.push(`http://sizabl.io/users/${username}`);
-  randomPool.user_profile_image.push(`profile_pictures/${i+1}.jpg`);
-  randomPool.user_name.push(`${faker.name.firstName()} ${faker.name.lastName()}`);
-  randomPool.user_elite_status.push(faker.random.boolean());
-  randomPool.user_review_count.push(Math.round(Math.random() * 500));
-  randomPool.user_friend_count.push(Math.round(Math.random() * 1000));
-  randomPool.user_photo_count.push(Math.round(Math.random() * 500));
+const generateRandomSamples = () => {
+  for (let i = 0; i < numSamples; i++) {
+    faker.seed(i);
+    randomPool.site_url.push(faker.internet.domainName());
+    const randomRestaurantIndex = Math.floor(Math.random() * restaurant.data.length);
+    const formattedRestaurantName = restaurant.data[randomRestaurantIndex].replace(/ +(?= )/g,''); //replace multiple spaces with single space
+    randomPool.restaurant_name.push(formattedRestaurantName);
+    randomPool.phone_number.push(faker.phone.phoneNumber());
+    randomPool.city.push(faker.address.city());
+    randomPool.street.push(faker.address.streetName());
+    randomPool.state_or_province.push(faker.address.stateAbbr());
+    // randomPool.country.push(faker.address.countryCode());
+    randomPool.zip.push(faker.address.zipCode());
+    randomPool.upload_date.push(faker.date.past().toLocaleString('en-US'));
+    const numWords = faker.random.number(5) + 5;
+    randomPool.caption.push(faker.lorem.sentence(numWords));
+    randomPool.user_id.push(i+1);
+    const username = faker.internet.userName().replace('.', '');
+    randomPool.user_url.push(`/users/${username}`);
+    randomPool.user_profile_image.push(`profile_pictures/${i+1}.jpg`);
+    randomPool.user_name.push(`${faker.name.firstName()} ${faker.name.lastName()}`);
+    randomPool.user_elite_status.push(faker.random.boolean());
+    randomPool.user_review_count.push(Math.round(Math.random() * 500));
+    randomPool.user_friend_count.push(Math.round(Math.random() * 1000));
+    randomPool.user_photo_count.push(Math.round(Math.random() * 500));
+  }
 }
 
 // generate (chunkSize) number of restaurant records with random number of photos
@@ -113,7 +114,7 @@ const generateRestaurantRecords = async (index) => {
       const user_id = randomSample();
       const photo_uuid = uuidv4(); // uuid for cassandra
       const user_uuid = uuidv4(); // uuid for cassandra
-      const photo_url = `https://photo-gallery-photos.s3-us-west-1.amazonaws.com/food/${Math.ceil(Math.random() * maxPhotoID)}.jpg`;
+      const photo_url = `/food/${Math.ceil(Math.random() * maxPhotoID)}.jpg`;
       const upload_date = randomPool.upload_date[randomSample()];
       const helpful_count = Math.round(Math.random() * 200);
       const not_helpful_count = Math.round(Math.random() * 200);
@@ -182,8 +183,8 @@ const generateRestaurantRecords = async (index) => {
               {id: 'helpful_count' , title: 'helpful_count'},
               {id: 'not_helpful_count' , title: 'not_helpful_count'},
               {id: 'photo_url' , title: 'photo_url'},
-              {id: 'upload_date' , title: 'upload_date'},
               {id: 'caption' , title: 'caption'},
+              {id: 'upload_date' , title: 'upload_date'},
             ],
     path: path.join(__dirname, 'generated', 'postgres', 'photos', `photos_${index}.csv`),
   });
@@ -204,7 +205,7 @@ const generateRestaurantRecords = async (index) => {
   });
 
   // set max number of records to write at a time to avoid overflow
-  const numRecordsToWrite = 1000;
+  const numRecordsToWrite = 10000;
   pgRestaurantRecords = _.chunk(pgRestaurantRecords, numRecordsToWrite);
   pgUserRecords = _.chunk(pgUserRecords, numRecordsToWrite);
   pgPhotoRecords = _.chunk(pgPhotoRecords, numRecordsToWrite);
@@ -231,4 +232,5 @@ const generateCSVRecords = async () => {
   }
 }
 
+generateRandomSamples();
 generateCSVRecords();
