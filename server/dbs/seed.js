@@ -5,7 +5,7 @@ const path = require('path');
 const restaurant = require('./restaurant-data');
 const { v4: uuidv4 } = require('uuid');
 
-const numRecords = 10000000;
+const numRecords = 10;
 const numDocuments = 5;
 const chunkSize = numRecords / numDocuments;
 

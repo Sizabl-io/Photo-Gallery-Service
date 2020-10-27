@@ -26,11 +26,7 @@ dist/
 **/bundle.js
 
 # Credentials
-**/credentials.js
-**/newrelic.js
 **/postgres-config.yml
-
-**/load-tests
 
 # Old DB/CSV files
 **/backup/
