@@ -29,7 +29,7 @@ dist/
 **/credentials.js
 **/newrelic.js
 **/postgres-config.yml
-
+**.pem
 **/load-tests
 
 # Old DB/CSV files

@@ -38,7 +38,9 @@ class App extends React.Component {
       .then(res => {
         console.log(JSON.stringify(res));
         res.data.gallery.forEach(image => {
-          imageList.push(image.photo_url);
+          const url = `https://photo-gallery-photos.s3-us-west-1.amazonaws.com${image.photo_url}`;
+          console.log(url);
+          imageList.push(url);
         });
         this.setState({
           data: res.data,
