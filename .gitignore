@@ -31,6 +31,8 @@ dist/
 **/postgres-config.yml
 **.pem
 **/load-tests
+**.txt
+**old
 
 # Old DB/CSV files
 **/backup/

@@ -36,10 +36,10 @@ class App extends React.Component {
     let imageList = [];
     axios.get(`/api/galleries/${Math.round(Math.random() * numRestaurants)}`)
       .then(res => {
-        console.log(JSON.stringify(res));
+        // console.log(JSON.stringify(res));
         res.data.gallery.forEach(image => {
           const url = `https://photo-gallery-photos.s3-us-west-1.amazonaws.com${image.photo_url}`;
-          console.log(url);
+          // console.log(url);
           imageList.push(url);
         });
         this.setState({
@@ -125,7 +125,7 @@ class App extends React.Component {
 
   setCurrentPic(evt) {
     evt.persist();
-    console.log('working!', evt);
+    // console.log('working!', evt);
     this.setState({
       currentImage: evt.target.currentSrc,
     });

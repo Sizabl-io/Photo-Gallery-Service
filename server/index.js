@@ -34,11 +34,18 @@ app.get('/api/galleries/:id', (req, res) => {
 // Photo API
 app.post('/api/photos/', (req, res) => {
   const photo = req.body;
-  // console.log(JSON.stringify(photo));
   db.insertPhoto(photo, false, (err, data) => {
-    // console.log(`${data.command}ed a photo!`);
+    console.log(`${data.command}ed a photo!`);
     res.sendStatus(201);
   });
+});
+
+app.patch('/api/photos/id', (req, res) => {
+  const photo = req.body;
+/*   db.updateOne(photo, false, (err, data) => {
+    console.log(`${data.command}ed a photo!`);
+    res.sendStatus(201);
+  }); */
 });
 
 app.delete('/api/photos/:id', (req, res) => {

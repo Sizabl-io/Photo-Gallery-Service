@@ -94,7 +94,7 @@ const deleteUserByID = async(user_id, analyze, cb) => {
 // insert a photo
 const insertPhoto = async (document, analyze, cb) => {
   const { restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date } = document;
-  const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}INSERT into photos(restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date) VALUES($1, $2, $3, $4, $5, $6, $7)`
+  const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}INSERT into photos(restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date) VALUES($1, $2, $3, $4, $5, $6, $7)`;
   try {
     const res = await client.query(query, [restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date]);
     cb(null, res);
