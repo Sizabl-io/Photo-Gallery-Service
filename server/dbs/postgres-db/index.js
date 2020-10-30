@@ -11,32 +11,28 @@ pool.on('error', (err, client) => {
   process.exit(-1);
 });
 
-let client;
+let client = null;
 
 // async/await - check out a client from the pool
 const connectToClient = async () => {
   client = await pool.connect();
+  // const res = await pool.query('SET search_path to public');
   console.log('Checked out a client!');
   // set the default schema
-  const res = await client.query('SET search_path to public');
 };
 
-const releaseClient = async () => {
+const releaseClient = () => {
   // Make sure to release the client before any error handling,
   // just in case the error handling itself throws an error.
-  if (client) {
-    client.release();
-  }
+  client.release(true);
   console.log('Released the client');
 };
 
 const insertRestaurant = async (document, analyze, cb) => {
-  connectToClient();
   const { restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip } = document;
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}INSERT into restaurants(restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip) VALUES($1, $2, $3, $4, $5, $6, $7, $8)`;
   try {
-    const res = await client.query(query, [restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip]);
-    client.release();
+    const res = await pool.query(query, [restaurant_name, site_url, phone_number, city, street, state_or_province, country, zip]);
     cb(null, res);
   } catch (err) {
     client.release();
@@ -45,14 +41,11 @@ const insertRestaurant = async (document, analyze, cb) => {
 }
 
 const selectRestaurantByID = async (restaurant_id, analyze, cb) => {
-  connectToClient();
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}SELECT * from restaurants WHERE restaurant_id = $1`;
   try {
-    const res = await client.query(query, [restaurant_id]);
-    releaseClient();
+    const res = await pool.query(query, [restaurant_id]);
     cb(null, res);
   } catch (err) {
-    releaseClient();
     cb(err, null);
   }
 
@@ -60,13 +53,10 @@ const selectRestaurantByID = async (restaurant_id, analyze, cb) => {
 
 const deleteRestaurantByID = async(restaurant_id, analyze, cb) => {
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}DELETE from restaurants WHERE restaurant_id = $1`;
-  connectToClient();
   try {
-    const res = await client.query(query, [restaurant_id]);
-    releaseClient();
+    const res = await pool.query(query, [restaurant_id]);
     cb(null, res);
   } catch (err) {
-    releaseClient();
     cb(err, null);
   }
 }
@@ -74,13 +64,10 @@ const deleteRestaurantByID = async(restaurant_id, analyze, cb) => {
 const insertUser = async (document, analyze, cb) => {
   const { user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image } = document;
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}INSERT into users(user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image) VALUES($1, $2, $3, $4, $5, $6, $7)`;
-  connectToClient();
   try {
-    const res = await client.query(query, [user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image]);
-    releaseClient();
+    const res = await pool.query(query, [user_url, user_name, user_review_count, user_friend_count, user_photo_count, user_elite_status, user_profile_image]);
     cb(null, res);
   } catch (err) {
-    releaseClient();
     cb(err, null);
   }
 }
@@ -88,13 +75,10 @@ const insertUser = async (document, analyze, cb) => {
 // select users by id
 const selectUserByID = async (user_id, analyze, cb) => {
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}SELECT * from users WHERE user_id = $1`;
-  connectToClient();
   try {
-    const res = await client.query(query, [user_id]);
-    releaseClient();
+    const res = await pool.query(query, [user_id]);
     cb(null, res);
   } catch (err) {
-    releaseClient();
     cb(err, null);
   }
 }
@@ -102,13 +86,10 @@ const selectUserByID = async (user_id, analyze, cb) => {
 // delete users by id
 const deleteUserByID = async(user_id, analyze, cb) => {
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}DELETE from users WHERE user_id = $1`;
-  connectToClient();
   try {
-    const res = await client.query(query, [user_id]);
-    releaseClient();
+    const res = await pool.query(query, [user_id]);
     cb(null, res);
   } catch (err) {
-    releaseClient();
     cb(err, null);
   }
 }
@@ -117,13 +98,10 @@ const deleteUserByID = async(user_id, analyze, cb) => {
 const insertPhoto = async (document, analyze, cb) => {
   const { restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date } = document;
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}INSERT into photos(restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date) VALUES($1, $2, $3, $4, $5, $6, $7)`;
-  connectToClient();
   try {
-    const res = await client.query(query, [restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date]);
-    releaseClient();
+    const res = await pool.query(query, [restaurant_id, user_id, helpful_count, not_helpful_count, photo_url, caption, upload_date]);
     cb(null, res);
   } catch (err) {
-    releaseClient();
     cb(err, null);
   }
 }
@@ -131,13 +109,10 @@ const insertPhoto = async (document, analyze, cb) => {
 // select photos by restaurant id
 const selectPhotoByID = async (restaurant_id, analyze, cb) => {
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}SELECT * from photos WHERE restaurant_id = $1`;
-  connectToClient();
   try {
-    const res = await client.query(query, [restaurant_id]);
-    releaseClient();
+    const res = await pool.query(query, [restaurant_id]);
     cb(null, res);
   } catch (err) {
-    releaseClient();
     cb(err, null);
   }
 }
@@ -145,20 +120,16 @@ const selectPhotoByID = async (restaurant_id, analyze, cb) => {
 // delete a photo by photo id
 const deletePhotoByID = async(photo_id, analyze, cb) => {
   const query = `${analyze ? 'EXPLAIN ANALYZE ' : ''}DELETE from photos WHERE photo_id = $1`;
-  connectToClient();
   try {
-    const res = await client.query(query, [photo_id]);
-    releaseClient();
+    const res = await pool.query(query, [photo_id]);
     cb(null, res);
   } catch (err) {
-    releaseClient();
     cb(err, null);
   }
 }
 
 module.exports = {
   connectToClient,
-  releaseClient,
   insertRestaurant,
   selectRestaurantByID,
   deleteRestaurantByID,
