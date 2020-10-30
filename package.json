@@ -20,6 +20,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors --watch",
+    "execution-time": "node server/dbs/tests.js",
     "start": "node server/index.js",
     "react-dev": "webpack -d --watch",
     "react": "webpack -p",
@@ -30,6 +31,7 @@
     "babel-jest": "^26.2.2",
     "cassandra-driver": "^4.6.0",
     "csv-writer": "^1.6.0",
+    "execution-time": "^1.4.1",
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "google-fonts-webpack-plugin": "^0.4.4",
@@ -38,6 +40,7 @@
     "mongodb": "^3.6.0",
     "mongoose": "^5.9.28",
     "mysql": "^2.18.1",
+    "newrelic": "^6.13.2",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "pg": "^8.4.1",
@@ -46,7 +49,8 @@
     "puppeteer-core": "^5.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "underscore": "^1.11.0"
+    "underscore": "^1.11.0",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
