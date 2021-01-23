@@ -11,6 +11,7 @@ const testPostgres = async () => {
 
   // get a client to connect to the database
   await pgDB.connectToClient();
+  console.log('Connected to client!');
 
   // test documents
   const restaurantDoc = {
@@ -25,29 +26,26 @@ const testPostgres = async () => {
   };
 
   const userDoc = {
-    user_url: 'http://sizabl.io/users/diao',
+    user_url: 'users/diao',
     user_name: 'diao',
-    uesr_review_count: 1000,
+    user_review_count: 1000,
     user_friend_count: 1000,
     user_photo_count: 99,
     user_elite_status: true,
-    user_profile_image: 'https://i.imgur.com/fPmznir.jpg',
+    user_profile_image: `profile_pictures/${Math.round(Math.random() * 100)}`,
   };
 
   const photoDoc = {
-    restaurant_id: 1,
-    user_id: 1,
+    restaurant_id: Math.floor(Math.random() * 10000000),
+    user_id: Math.ceil(Math.random() * 1000),
     helpful_count: 100,
     not_helpful_count: 100,
-    photo_url: 'https://www.cliseetiquette.com/wp-content/uploads/2019/09/waiter-serving-food.jpg',
+    photo_url: `/food/${Math.round(Math.random() * 1000)}`,
     caption: 'Fine dining',
-    upload_date: Date.now().toString(),
+    upload_date: new Date().toLocaleString('en-US'),
   };
 
-  // count the number of records in each table
-  // const numRestaurantRecords = await pgDB.countRows('restaurants');
-  // const numUserRecords = await pgDB.countRows('users');
-  // const numPhotoRecords = await pgDB.countRows('photos');
+  console.log(photoDoc);
 
   // restaurant table measurements
   await pgDB.insertRestaurant(restaurantDoc, true, (err, data) => {
@@ -96,10 +94,11 @@ const testPostgres = async () => {
   let inserted_id;
 
   // photo table measurements
-  await pgDB.insertPhoto(photoDoc, true, (err, data) => {
+  await pgDB.insertPhoto(photoDoc, false, (err, data) => {
     if (err) {
       throw err;
     }
+    console.log(data);
     results.push(data.rows);
   });
 
@@ -170,7 +169,7 @@ const testCassandra = async () => {
     helpful_count: 100,
     not_helpful_count: 100,
     caption: 'Fine dining',
-    user_url: 'http://sizabl.io/users/diao',
+    user_url: 'users/diao',
     user_profile_image: 'https://i.imgur.com/fPmznir.jpg',
     user_name: 'diao',
     user_elite_status: true,
@@ -212,7 +211,7 @@ const testCassandra = async () => {
 
 const testAll = async () => {
   await testPostgres();
-  await testCassandra();
+  // await testCassandra();
 }
 
 testAll();
