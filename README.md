@@ -1,210 +1,129 @@
-# Project Name
-
-> Project description
+# `Sizabl.io` Gallery Service
 
 ## Related Projects
 
-  - https://github.com/Glity/photo-gallery
-  - https://github.com/Glity/reviews
-  - https://github.com/Glity/Calendar-reservation
-  - https://github.com/Glity/people-also-viewed
+- https://github.com/Sizabl-io/review-service
+- https://github.com/Sizabl-io/calendar-reservations
+- https://github.com/Sizabl-io/people-also-viewed
 
-## Table of Contents
+## Installing Dependencies
 
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
+- [PostgreSQL](https://www.postgresql.org/download/)
+- Postgres credentials file in the postgres-db file, see `postgres-db/index.js` for more details.
+- New Relic configuration file in root directory.
+
+From within the root directory:
+
+```sh
+npm i -g webpack
+npm i
+```
 
 ## Usage
 
-Endpoints:
-
-## Server API
-
-</br>
-
-## *Restaurant API*
+- `npm run seed` will generate mock data CSV files according to `numRecords` and
+  `numDocuments` within seed.js. Adjust Node's allocated RAM within package.json as needed.
+- Load the CSV files into the database within the postgres-db folder: `psql -U postgres -h 127.0.0.1 -f photo-gallery-schema.sql`
+- Start the server using `npm start`
+- Start the client using `npm run react-dev` or `npm run react`
 
 </br>
 
-### Get restaurant information matching id
-  * GET `/api/restaurants/:id`
+## _Restaurant API_
+
+</br>
+
+### Get restaurant information by restaurant id
+
+- GET `/api/restaurants/:id`
 
 **Path Parameters:**
-  * `id` - restaurant id
+
+- `id` - restaurant id
 
 **Success Status Code:** `200`
 
 **Returns:** JSON
 
 ```json
-    {
-      "gallery_id": "Number",
-      "restaurant_name": "String",
-      "city": "String",
-      "street": "String",
-      "state_or_province": "Number",
-      "country": "String",
-      "zip": "String",
-      "site_url": "String",
-      "phone_number": "String",
-    }
+{
+  "restaurant_id": "Number",
+  "restaurant_name": "String",
+  "site_url": "String",
+  "phone_number": "String",
+  "city": "String",
+  "street": "String",
+  "state_or_province": "Number",
+  "country": "String",
+  "zip": "String"
+}
 ```
 
 </br>
 
-## *Gallery API*
+## _Gallery API_
 
 </br>
 
+### Select all photos matching restaurant ID
 
-### Get a gallery matching id
-  * GET `/api/galleries/:id`
+- GET `/api/galleries/:id`
 
 **Path Parameters:**
-  * `id` - gallery id
+
+- `id` - restaurant id
 
 **Success Status Code:** `200`
 
 **Returns:** Array of JSON photo objects
 
 ```json
-    {
-      "photo_url": "String",
-      "upload_date": "String",
-      "helpfulCount": "Number",
-      "notHelpfulCount": "Number",
-      "caption": "String",
-      "user_url": "String",
-      "user_name": "String",
-      "user_review_count": "Number",
-      "user_friend_count": "Number",
-      "user_photo_count": "Number",
-    }
+{
+  "photo_id": "Number",
+  "restaurant_id": "Number",
+  "user_id": "Number",
+  "helpful_count": "Number",
+  "not_helpful_count": "Number",
+  "photo_url": "String",
+  "caption": "String",
+  "upload_date": "String"
+}
 ```
 
 </br>
 
-## *Photo API*
+## _Photo API_
 
 </br>
-
-### Get a photo matching id
-  * GET `/api/photos/:id`
-
-**Path Parameters:**
-  * `id` - photo id
-
-**Success Status Code:** `200`
-
-**Returns:** JSON
-
-```json
-    {
-      "photo_url": "String",
-      "upload_date": "String",
-      "helpfulCount": "Number",
-      "notHelpfulCount": "Number",
-      "caption": "String",
-      "user_url": "String",
-      "user_name": "String",
-      "user_review_count": "Number",
-      "user_friend_count": "Number",
-      "user_photo_count": "Number",
-    }
-```
 
 ### Add a photo
-  * POST `/api/photos`
+
+- POST `/api/photos`
 
 **Success Status Code:** `201`
 
 **Request Body**: Expects JSON with the following keys.
 
 ```json
-    {
-      "restaurant_id": "Number", // restaurant to associate photo with
-      "gallery_id": "Number", // gallery to associate photo with
-      "user_id": "Number", // id user that posted the photo
-      "photo_url": "String", // required
-      "upload_date": "String", // required
-      "caption": "String", // optional
-    }
+{
+  "restaurant_id": "Number",
+  "user_id": "Number",
+  "helpful_count": "Number",
+  "not_helpful_count": "Number",
+  "photo_url": "String",
+  "upload_date": "String",
+  "caption": "String"
+}
 ```
 
-### Update individual photo info
-  * PATCH `/api/photos/:id`
+### Delete photos matching photo id
+
+- DELETE `/api/photos/:id`
 
 **Path Parameters:**
-  * `id` - photo id
 
-**Success Status Code:** `204`
-
-**Request Body**: Expects JSON with any of the following keys (include only keys to be updated)
-
-```json
-    {
-      "helpfulCount": "Number",
-      "notHelpfulCount": "Number",
-      "photo_url": "String",
-      "caption": "String",
-    }
-```
-
-### Delete photo matching id
-  * DELETE `/api/photos/:id`
-
-**Path Parameters:**
-  * `id` - photo id
-
-**Success Status Code:** `204`
-
-</br>
-
-## *User API*
-
-</br>
-
-### Get all photos posted by a user
-  * GET `/api/users/photos/:id`
-
-**Path Parameters:**
-  * `id` - user id
+- `id` - photo id
 
 **Success Status Code:** `200`
 
-**Returns:** Array of JSON photo objects
-
-```json
-    {
-      "photo_url": "String",
-      "upload_date": "String",
-      "helpfulCount": "Number",
-      "notHelpfulCount": "Number",
-      "caption": "String",
-      "user_url": "String",
-      "user_name": "String",
-      "user_review_count": "Number",
-      "user_friend_count": "Number",
-      "user_photo_count": "Number",
-    }
-```
-
-## Requirements
-
-An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
-
-- Node 6.13.0
-- etc
-
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-npm install -g webpack
-npm install
-```
-
+</br>
